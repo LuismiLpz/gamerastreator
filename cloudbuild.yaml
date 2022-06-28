@@ -2,11 +2,11 @@ steps:
   #build the container image
   - name: "gcr.io/cloud-builders/docker"
     args:
-      ["build", "-t", "gcr.io/gamerastreator/gamerastreator:${SHORT_SHA}","."]
+      ["build", "-t", "gcr.io/$PROJECT_ID/gamerastreator:${SHORT_SHA}","."]
     #push the container image to container Registry
 
   - name: "gcr.io/cloud-builders/docker"
-    args: ["push","gcr.io/gamerastreator/gamerastreator"]
+    args: ["push","gcr.io/$PROJECT_ID/gamerastreator"]
     #deploy container iage to cloud run
   - name: "gcr.io/cloud-builders/gcloud"
     args:
@@ -16,12 +16,12 @@ steps:
         "deploy",
         "gamerastreator",
         "--image",
-        "gcr.io/gamerastreator/gamerastreator;${SHORT_SHA}",
+        "gcr.io/$PROJECT_ID/gamerastreator;${SHORT_SHA}",
         "--region",
         "uscentral1",
-        "--allow-unauthenticated",
+        "--allow-unauthenticated"
       ]
       env:
         - "PORT=8080"
     images:
-      - gcr.io/gamerastreator/gamerastreator
+      - gcr.io/$PROJECT_ID/gamerastreator
